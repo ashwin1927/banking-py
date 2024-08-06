@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Check Balance</h2>
+    <form method="post">
+        <label for="owner">Account Owner:</label>
+        <input type="text" id="owner" name="owner" required><br>
+
+        <input type="submit" value="Check Balance">
+    </form>
+
+    {% if owner %}
+        <p>Account Owner: {{ owner }}</p>
+        <p>Account Balance: ${{ balance }}</p>
+    {% endif %}
+{% endblock %}
