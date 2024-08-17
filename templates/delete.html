@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bank App</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link rel="icon/png" href="/static/img/img.png">
+    <link rel="icon" href="/static/img/img.png">
 </head>
 
 <body>
@@ -21,7 +21,23 @@
         <div class="main-container">
             <div class="text-sphere-container">
                 <div class="text-container">
-                    <h1>Banking App</h1>
+                    <h1>Delete Account</h1>
+                    <p>Fill in the fields to delete account, <a href="/"
+                            style="font-size: 17px; font-weight: 700;">click
+                            here</a> to return back home.</p>
+
+                    <form method="post">
+                        <label for="owner">Owner:</label><br>
+                        <input type="text" name="owner" required><br>
+                        <label for="password">Password:</label><br>
+                        <input type="password" name="password" required><br>
+                        <div style="display: inline-flex; gap:20px;">
+                            <input class="submit"  type="submit" value="Delete Account">
+                            <a style="margin-top:10px;" class="buy" href="{{ url_for('index') }}">Back to Home</a>
+                        </div>
+                    </form>
+
+
                     <div id="message" class="mess">
                         {% with messages = get_flashed_messages() %}
                         {% if messages %}
@@ -33,26 +49,22 @@
                         {% endif %}
                         {% endwith %}
                     </div>
-                    <p>A banking system project made by Aditya, Isaac and Ashwin</p><br><br>
-                    <div style="display: inline-flex;">
-                        <a style="font-size: medium;" class="buy" href="{{ url_for('client_dashboard') }}">Client
-                            App</a>
-                        <a style="margin: auto; font-size: medium;" class="buy"
-                            href="{{ url_for('admin_login') }}">Admin Login</a>
-                    </div>
-
                 </div>
-                <a href="#BankAppPy">
+
+                <a style="margin-left: -90px" href="#BankAppPy">
                     <div class="sphere">
                         <img height="200px" width="200px" src="/static/img/img.png"></img>
                     </div>
                 </a>
             </div>
+
             <div class="learn-arrow">
                 <p>*Project By Aditya, Ashwin, Isaac*</p>
             </div>
         </div>
     </div>
+
+
 </body>
 
 </html>

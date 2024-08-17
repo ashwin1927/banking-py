@@ -13,7 +13,7 @@
 
 <body>
     <div class="scotch-container">
-        <!--- <nav>
+       <!--- <nav>
             <a href="#" target="_blank">Developer</a>
             <a href="#" target="_blank">Vident</a>
             <a href="#" class="buy">Try VEDA</a>
@@ -21,10 +21,8 @@
         <div class="main-container">
             <div class="text-sphere-container">
                 <div class="text-container">
-                    <h1>Deposit Funds</h1>
-                    <p>Fill in the fields to deposit funds, <a href="/"
-                            style="font-size: 17px; font-weight: 700;">click
-                            here</a> to return back home.</p>
+                    <h1>Banking App</h1>
+
                     {% with messages = get_flashed_messages() %}
                     {% if messages %}
                     <ul>
@@ -34,25 +32,18 @@
                     </ul>
                     {% endif %}
                     {% endwith %}
-                    <form method="post">
-                        <label for="owner">Owner:</label><br>
-                        <input type="text" name="owner" required><br>
-                        <label for="password">Password:</label><br>
-                        <input type="password" name="password" required><br>
-                        <label for="amount">Amount:</label><br>
-                        <input type="number" step="0.01" name="amount" required><br>
-
-                        <div style="display: inline-flex; gap:20px;">
-                            <input class="submit"  type="submit" value="Deposit">
-                            <a style="margin-top:10px;" class="buy" href="{{ url_for('index') }}">Back to Home</a>
-                        </div>
-                    </form>
-
-
-
+                    <p>Choose from the below actions, <a href="/" style="font-size: 17px; font-weight: 700;">click here</a> to return back home.</p>
+                    <div style="display: inline-flex;">
+                        <a style="margin: auto; font-size: small;" class="buy-cta" href="{{ url_for('create_account') }}">Create Account</a>
+                        <a style="margin: auto; font-size: small;" class="buy-cta" href="{{ url_for('delete_account') }}">Delete Account</a>
+                    </div>
+                    <div style="display: inline-flex; margin-top: 15px; gap: 20px;">
+                        <a style="margin: auto;" class="buy" href="{{ url_for('deposit') }}">Deposit</a>
+                        <a style="margin: auto;" class="buy" href="{{ url_for('withdraw') }}">Withdraw</a>
+                        <a style="margin: auto;" class="buy" href="{{ url_for('check_balance') }}">Balance</a>
+                    </div>
                 </div>
-
-                <a style="margin-left: -90px" href="#BankAppPy">
+                <a href="#BankAppPy">
                     <div class="sphere">
                         <img height="200px" width="200px" src="/static/img/img.png"></img>
                     </div>

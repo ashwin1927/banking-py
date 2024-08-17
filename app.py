@@ -4,7 +4,9 @@ import os
 
 app = Flask(__name__)
 app.secret_key = 'ashwin'
-accounts_file = 'accounts.dat'
+accounts_file = 'accounts.bin'
+
+admin_credentials = {'admin': 'admin123'}
 
 def load_accounts():
     if os.path.exists(accounts_file):
@@ -20,6 +22,7 @@ def save_accounts(accounts):
 def index():
     return render_template('index.html')
 
+# Client Side Routes
 @app.route('/create', methods=['GET', 'POST'])
 def create_account():
     if request.method == 'POST':
@@ -112,5 +115,99 @@ def check_balance():
 
     return render_template('balance.html', owner=None, balance=None)
 
+@app.route('/delete', methods=['GET', 'POST'])
+def delete_account():
+    if request.method == 'POST':
+        owner = request.form['owner']
+        password = request.form['password']
 
-app.run(debug=True)
+        accounts = load_accounts()
+
+        if owner in accounts:
+            if accounts[owner]['password'] == password:
+                del accounts[owner]
+                save_accounts(accounts)
+                flash('Account deleted successfully.')
+                return redirect(url_for('index'))
+            else:
+                flash('Incorrect password. Access denied.')
+        else:
+            flash('Account not found.')
+
+    return render_template('delete.html')
+
+# Admin Side Routes
+@app.route('/admin', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        if username in admin_credentials and admin_credentials[username] == password:
+            session['admin_logged_in'] = True
+            return redirect(url_for('admin_dashboard'))
+        else:
+            flash('Invalid admin credentials.')
+
+    return render_template('admin_login.html')
+
+@app.route('/admin/dashboard')
+def admin_dashboard():
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+
+    accounts = load_accounts()
+    return render_template('admin_dashboard.html', accounts=accounts)
+
+@app.route('/admin/delete/<owner>', methods=['POST'])
+def admin_delete_account(owner):
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+
+    accounts = load_accounts()
+    if owner in accounts:
+        del accounts[owner]
+        save_accounts(accounts)
+        flash(f'Account {owner} has been deleted.')
+
+    return redirect(url_for('admin_dashboard'))
+
+@app.route('/admin/edit/<owner>', methods=['GET', 'POST'])
+def admin_edit_account(owner):
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+
+    accounts = load_accounts()
+
+    if request.method == 'POST':
+        new_balance = float(request.form['new_balance'])
+
+        if owner in accounts:
+            accounts[owner]['balance'] = new_balance
+            save_accounts(accounts)
+            flash(f'Account {owner} updated successfully.')
+
+        return redirect(url_for('admin_dashboard'))
+
+    if owner in accounts:
+        account_info = accounts[owner]
+        return render_template('admin_edit.html', owner=owner, account=account_info)
+    else:
+        flash('Account not found.')
+        return redirect(url_for('admin_dashboard'))
+    
+@app.route('/client')
+def client_dashboard():
+    return render_template('client_dashboard.html')
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
+@app.route('/admin/logout')
+def admin_logout():
+    session.pop('admin_logged_in', None)
+    return redirect(url_for('admin_login'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
