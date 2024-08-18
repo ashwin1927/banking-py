@@ -120,11 +120,12 @@ def delete_account():
     if request.method == 'POST':
         owner = request.form['owner']
         password = request.form['password']
+        password1 = request.form['password1']
 
         accounts = load_accounts()
 
         if owner in accounts:
-            if accounts[owner]['password'] == password:
+            if accounts[owner]['password'] == password and accounts[owner]['password'] == password1:
                 del accounts[owner]
                 save_accounts(accounts)
                 flash('Account deleted successfully.')

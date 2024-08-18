@@ -42,6 +42,25 @@ input[type="number"]:focus{
 border: 2px solid grey;
 }
 
+.show-btn{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  font-family: "Mulish", sans-serif;
+  color: var(--mid-light);
+  font-weight: 400;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.show-btn:hover{
+  transition: all 0.2s ease-in-out;
+  font-weight: 900;
+  text-shadow: 0 0 8px var(--light-color);
+  cursor: pointer;
+}
+
 .delete-btn{
   background-color: #ffffff00;
   color: #fff;
@@ -247,6 +266,7 @@ a {
   font-weight: 400;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
 a:not(.buy, .buy-cta, .learn) {
