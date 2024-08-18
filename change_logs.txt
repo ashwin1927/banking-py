@@ -6,3 +6,5 @@
 2024-08-18 14:25:21 - Created Account - Owner: enzo, Amount: $0.0
 2024-08-18 14:25:39 - Created Account - Owner: jithu, Amount: $6969696.0
 2024-08-18 14:26:00 - Created Account - Owner: chandy, Amount: $50.0
+2024-08-18 20:20:40 - Created Account - Owner: testoihn, Amount: $34440340.0
+2024-08-18 20:22:00 - Admin Edited Balance - Owner: ashwin, Amount: $6844295602.0
