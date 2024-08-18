@@ -16,7 +16,8 @@
         <div class="main-container">
             <h1>Accounts</h1>
             <p style="margin-top: -150px; margin-bottom: -150px;">Review accounts from the admin dashboard or, <a
-                    href="/" style="font-size: 17px; font-weight: 700;">click here</a> to return back home.</p>
+                    href="/" style="font-size: 17px; font-weight: 700;">click here</a> to return back home.<br>
+                    <a href="{{ url_for('view_logs') }}">View Logs</a></p>
             {% with messages = get_flashed_messages() %}
             {% if messages %}
             <ul>

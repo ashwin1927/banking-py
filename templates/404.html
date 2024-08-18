@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon/png" href="/static/img/img.png">
+</head>
+
+<body>
+    <div class="scotch-container">
+        <!--- <nav>
+            <a href="#" target="_blank">Developer</a>
+            <a href="#" target="_blank">Vident</a>
+            <a href="#" class="buy">Try VEDA</a>
+        </nav>-->
+        <div class="main-container">
+            <div class="text-sphere-container">
+                <div class="text-container">
+                    <h1>404 Error</h1>
+                    <div id="message" class="mess">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        <ul>
+                            {% for message in messages %}
+                            <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                    <p>The page you are looking for doesen't exist or is missing, please choose from the actions below</p><br><br>
+                    <div style="display: inline-flex;">
+                        <a style="font-size: medium;" class="buy" href="{{ url_for('client_dashboard') }}">Client
+                            App</a>
+                        <a style="margin: auto; font-size: medium;" class="buy"
+                            href="{{ url_for('admin_login') }}">Admin Login</a>
+                    </div>
+
+                </div>
+                <a href="#BankAppPy">
+                    <div class="sphere">
+                        <img height="200px" width="200px" src="/static/img/img.png"></img>
+                    </div>
+                </a>
+            </div>
+            <div class="learn-arrow">
+                <p>*Project By Aditya, Ashwin, Isaac*</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

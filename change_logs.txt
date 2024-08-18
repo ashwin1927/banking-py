@@ -1,0 +1,8 @@
+2024-08-18 14:22:16 - Created Account - Owner: ashwin, Amount: $543242.0
+2024-08-18 14:24:31 - Created Account - Owner: test, Amount: $42222.0
+2024-08-18 14:24:44 - Created Account - Owner: isaac, Amount: $5999.0
+2024-08-18 14:24:55 - Created Account - Owner: aditya, Amount: $42231.0
+2024-08-18 14:25:08 - Created Account - Owner: kim, Amount: $31212.0
+2024-08-18 14:25:21 - Created Account - Owner: enzo, Amount: $0.0
+2024-08-18 14:25:39 - Created Account - Owner: jithu, Amount: $6969696.0
+2024-08-18 14:26:00 - Created Account - Owner: chandy, Amount: $50.0

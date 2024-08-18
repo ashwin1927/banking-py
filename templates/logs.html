@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Logs - Bank App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="scotch-container">
+        <div class="main-container">
+            <h1>Logs</h1>
+            <p style="margin-top: -150px; margin-bottom: -150px;">All actions are logged here. <a
+                    href="/" style="font-size: 17px; font-weight: 700;">click here</a> to return back home.</p>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul>
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>{{ log.timestamp }}</td>
+                    <td>{{ log.action }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="learn-arrow">
+    <p>*Project By Aditya, Ashwin, Isaac*</p>
+</div>
+<a class="buy" href="{{ url_for('admin_dashboard') }}">Admin Dash</a>
+</body>
+</html>
+
+
+
+<style>
+    .scotch-container {
+        overflow-y: scroll;
+        width: 750px;
+        text-align: center;
+        align-items: center;
+        border-radius: 7px;
+    }
+
+    .main-container {
+        margin-left: auto;
+        width: auto;
+    }
+
+</style>

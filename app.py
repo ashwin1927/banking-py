@@ -1,12 +1,17 @@
 from flask import *
 import pickle
 import os
+import datetime
 
 app = Flask(__name__)
 app.secret_key = 'ashwin'
-accounts_file = 'accounts.bin'
-
+accounts_file = 'accounts.dat'
+log_file = 'change_logs.txt'
 admin_credentials = {'admin': 'admin123'}
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 def load_accounts():
     if os.path.exists(accounts_file):
@@ -17,6 +22,15 @@ def load_accounts():
 def save_accounts(accounts):
     with open(accounts_file, 'wb') as file:
         pickle.dump(accounts, file)
+
+def log_change(action, owner, amount=None):
+    with open(log_file, 'a') as file:
+        timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        if amount is not None:
+            log_entry = f"{timestamp} - {action} - Owner: {owner}, Amount: ${amount}\n"
+        else:
+            log_entry = f"{timestamp} - {action} - Owner: {owner}\n"
+        file.write(log_entry)
 
 @app.route('/')
 def index():
@@ -37,6 +51,7 @@ def create_account():
         else:
             accounts[owner] = {'password': password, 'balance': initial_deposit}
             save_accounts(accounts)
+            log_change('Created Account', owner, initial_deposit)
             flash(f'Account created for {owner} with initial deposit of ${initial_deposit}')
 
         return redirect(url_for('index'))
@@ -57,6 +72,7 @@ def deposit():
                 if amount > 0:
                     accounts[owner]['balance'] += amount
                     save_accounts(accounts)
+                    log_change('Deposit', owner, amount)
                     flash(f'Deposit successful! New balance: ${accounts[owner]["balance"]}')
                 else:
                     flash('Deposit amount must be positive.')
@@ -84,6 +100,7 @@ def withdraw():
                     if amount <= accounts[owner]['balance']:
                         accounts[owner]['balance'] -= amount
                         save_accounts(accounts)
+                        log_change('Withdrawal', owner, amount)
                         flash(f'Withdrawal successful! New balance: ${accounts[owner]["balance"]}')
                     else:
                         flash('Insufficient funds.')
@@ -128,6 +145,7 @@ def delete_account():
             if accounts[owner]['password'] == password and accounts[owner]['password'] == password1:
                 del accounts[owner]
                 save_accounts(accounts)
+                log_change('Deleted Account', owner)
                 flash('Account deleted successfully.')
                 return redirect(url_for('index'))
             else:
@@ -169,6 +187,7 @@ def admin_delete_account(owner):
     if owner in accounts:
         del accounts[owner]
         save_accounts(accounts)
+        log_change('Admin Deleted Account', owner)
         flash(f'Account {owner} has been deleted.')
 
     return redirect(url_for('admin_dashboard'))
@@ -184,8 +203,10 @@ def admin_edit_account(owner):
         new_balance = float(request.form['new_balance'])
 
         if owner in accounts:
+            old_balance = accounts[owner]['balance']
             accounts[owner]['balance'] = new_balance
             save_accounts(accounts)
+            log_change('Admin Edited Balance', owner, new_balance - old_balance)
             flash(f'Account {owner} updated successfully.')
 
         return redirect(url_for('admin_dashboard'))
@@ -196,7 +217,23 @@ def admin_edit_account(owner):
     else:
         flash('Account not found.')
         return redirect(url_for('admin_dashboard'))
-    
+
+@app.route('/admin/logs')
+def view_logs():
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+
+    logs = []
+    if os.path.exists(log_file):
+        with open(log_file, 'r') as file:
+            for line in file:
+                parts = line.strip().split(' - ')
+                logs.append({
+                    'timestamp': parts[0],
+                    'action': ' - '.join(parts[1:])
+                })
+    return render_template('logs.html', logs=logs)
+
 @app.route('/client')
 def client_dashboard():
     return render_template('client_dashboard.html')
