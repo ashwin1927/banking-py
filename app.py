@@ -36,7 +36,7 @@ def log_change(action, owner, amount=None):
 def index():
     return render_template('index.html')
 
-# Client Side Routes
+
 @app.route('/create', methods=['GET', 'POST'])
 def create_account():
     if request.method == 'POST':
@@ -155,7 +155,7 @@ def delete_account():
 
     return render_template('delete.html')
 
-# Admin Side Routes
+
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
