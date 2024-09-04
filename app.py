@@ -9,37 +9,37 @@ accounts_file = 'accounts.dat'
 log_file = 'change_logs.txt'
 admin_credentials = {'admin': 'admin123'}
 
-# Function to handle 404 errors
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
-# Load accounts from file
+
 def load_accounts():
     if os.path.exists(accounts_file):
         with open(accounts_file, 'rb') as file:
             return pickle.load(file)
     return {}
 
-# Save accounts to file
+
 def save_accounts(accounts):
     with open(accounts_file, 'wb') as file:
         pickle.dump(accounts, file)
 
-# Log changes to accounts in user-specific log files
+
 def log_change(action, owner, amount=None):
-    # Ensure the logs directory exists
+    
     if not os.path.exists('logs'):
         os.makedirs('logs')
     
     user_log_file = os.path.join('logs', f'{owner}_log.csv')
     
-    # If the log file doesn't exist, create it and write the headers
+    
     if not os.path.exists(user_log_file):
         with open(user_log_file, 'w') as file:
             file.write('Timestamp,Action,Amount\n')
     
-    # Log the action
+    
     with open(user_log_file, 'a') as file:
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         if amount is not None:
@@ -261,12 +261,12 @@ def admin_logout():
     session.pop('admin_logged_in', None)
     return redirect(url_for('admin_login'))
 
-# Route to download user bank statements
+
 @app.route('/download_statement/<owner>', methods=['GET'])
 def download_statement(owner):
     user_log_file = os.path.join('logs', f'{owner}_log.csv')
     
-    # Check if the user log file exists
+    
     if os.path.exists(user_log_file):
         return send_file(user_log_file, as_attachment=True, download_name=f'{owner}_statement.csv', mimetype='text/csv')
     else:
