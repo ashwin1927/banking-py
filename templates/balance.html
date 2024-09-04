@@ -73,34 +73,38 @@
                     <div class="account_info">
                         <p>Account Owner: <span>{{ owner }}</span></p>
                         <p>Current Balance: <span>${{ balance }}</span></p>
-                        <a style="font-size: medium;" class="buy"
-                        href="{{ url_for('index') }}">Back Home</a>
-                    </div>
-                    {% else %}
-                    <form method="post">
-                        <label for="owner">Owner:</label><br>
-                        <input type="text" name="owner" required><br>
-                        <div style="display: inline-flex; gap:20px;">
-                            <input class="submit" type="submit" value="Check Balance">
-                            <a style="margin-top:10px;" class="buy" href="{{ url_for('index') }}">Back to Home</a>
+                        <div style="display: inline-flex; gap: 15px;width: max-content;">
+                            <a style="font-size: small;" class="buy" href="{{ url_for('index') }}">Back Home</a>
+                            <a style="font-size: small; width: 70%;" class="buy"
+                                href="{{ url_for('download_statement', owner=owner) }}">Download Statement</a>
                         </div>
-                    </form>
-                    {% endif %}
-
-
-
-                </div>
-
-                <a style="margin-left: -90px" href="#BankAppPy">
-                    <div class="sphere">
-                        <img height="200px" width="200px" src="/static/img/img.png"></img>
                     </div>
-                </a>
+                </div>
+                {% else %}
+                <form method="post">
+                    <label for="owner">Owner:</label><br>
+                    <input type="text" name="owner" required><br>
+                    <div style="display: inline-flex; gap:20px;">
+                        <input class="submit" type="submit" value="Check Balance">
+                        <a style="margin-top:10px;" class="buy" href="{{ url_for('index') }}">Back to Home</a>
+                    </div>
+                </form>
+                {% endif %}
+
+
+
             </div>
-            <div class="learn-arrow">
-                <p>*Project By Aditya, Ashwin, Isaac*</p>
-            </div>
+
+         <!---  <a style="margin-left: -90px" href="#BankAppPy">
+                <div class="sphere">
+                    <img height="200px" width="200px" src="/static/img/img.png"></img>
+                </div>
+            </a>--> 
         </div>
+        <div class="learn-arrow">
+            <p>*Project By Aditya, Ashwin, Isaac*</p>
+        </div>
+    </div>
     </div>
 </body>
 

@@ -9,33 +9,48 @@ accounts_file = 'accounts.dat'
 log_file = 'change_logs.txt'
 admin_credentials = {'admin': 'admin123'}
 
+# Function to handle 404 errors
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html'), 404
 
+# Load accounts from file
 def load_accounts():
     if os.path.exists(accounts_file):
         with open(accounts_file, 'rb') as file:
             return pickle.load(file)
     return {}
 
+# Save accounts to file
 def save_accounts(accounts):
     with open(accounts_file, 'wb') as file:
         pickle.dump(accounts, file)
 
+# Log changes to accounts in user-specific log files
 def log_change(action, owner, amount=None):
-    with open(log_file, 'a') as file:
+    # Ensure the logs directory exists
+    if not os.path.exists('logs'):
+        os.makedirs('logs')
+    
+    user_log_file = os.path.join('logs', f'{owner}_log.csv')
+    
+    # If the log file doesn't exist, create it and write the headers
+    if not os.path.exists(user_log_file):
+        with open(user_log_file, 'w') as file:
+            file.write('Timestamp,Action,Amount\n')
+    
+    # Log the action
+    with open(user_log_file, 'a') as file:
         timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         if amount is not None:
-            log_entry = f"{timestamp} - {action} - Owner: {owner}, Amount: ${amount}\n"
+            log_entry = f"{timestamp},{action},${amount}\n"
         else:
-            log_entry = f"{timestamp} - {action} - Owner: {owner}\n"
+            log_entry = f"{timestamp},{action},\n"
         file.write(log_entry)
 
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 @app.route('/create', methods=['GET', 'POST'])
 def create_account():
@@ -155,7 +170,6 @@ def delete_account():
 
     return render_template('delete.html')
 
-
 @app.route('/admin', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
@@ -246,6 +260,18 @@ def test():
 def admin_logout():
     session.pop('admin_logged_in', None)
     return redirect(url_for('admin_login'))
+
+# Route to download user bank statements
+@app.route('/download_statement/<owner>', methods=['GET'])
+def download_statement(owner):
+    user_log_file = os.path.join('logs', f'{owner}_log.csv')
+    
+    # Check if the user log file exists
+    if os.path.exists(user_log_file):
+        return send_file(user_log_file, as_attachment=True, download_name=f'{owner}_statement.csv', mimetype='text/csv')
+    else:
+        flash('No transaction history found for this account.')
+        return redirect(url_for('index'))
 
 if __name__ == '__main__':
     app.run(debug=True)
